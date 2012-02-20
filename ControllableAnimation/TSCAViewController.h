@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface TSCAViewController : UIViewController
+@interface TSCAViewController : UIViewController <UIGestureRecognizerDelegate>
 
 @end

@@ -27,7 +27,7 @@
     animatedView.backgroundColor = [UIColor grayColor];
     [self.view addSubview:animatedView];
     
-    TSCAAnimation *controllableAnimation = [TSCAAnimation animationWithObject:animatedView.layer keyPath:@"position.x" values:[NSArray arrayWithObjects:
+    TSCAAnimation *horizontalAnimation = [TSCAAnimation animationWithObject:animatedView.layer keyPath:@"position.x" values:[NSArray arrayWithObjects:
                                                                                 [NSNumber numberWithFloat:0],
                                                                                 [NSNumber numberWithFloat:200],
                                                                                 [NSNumber numberWithFloat:300],
@@ -39,13 +39,36 @@
                                                                                 [NSNumber numberWithFloat:800],
                                                                                 [NSNumber numberWithFloat:900],
                                                                                 nil]];
-//    [controllableAnimation animateToFraction:1.0 withDuration:5];
     
-    UIPinchGestureRecognizer *pinch = [[UIPinchGestureRecognizer alloc] initWithTarget:controllableAnimation action:@selector(pinchHandler:)];
-    [self.view addGestureRecognizer:pinch];
+    TSCAAnimation *verticalAnimation = [TSCAAnimation animationWithObject:animatedView.layer keyPath:@"position.y" values:[NSArray arrayWithObjects:
+                                                                                                                               [NSNumber numberWithFloat:0],
+                                                                                                                               [NSNumber numberWithFloat:10],
+                                                                                                                               [NSNumber numberWithFloat:20],
+                                                                                                                               [NSNumber numberWithFloat:30],
+                                                                                                                               [NSNumber numberWithFloat:100],
+                                                                                                                               [NSNumber numberWithFloat:200],
+                                                                                                                               [NSNumber numberWithFloat:300],
+                                                                                                                               [NSNumber numberWithFloat:350],
+                                                                                                                               [NSNumber numberWithFloat:400],
+                                                                                                                               [NSNumber numberWithFloat:450],
+                                                                                                                               nil]];
+    [horizontalAnimation animateToFraction:1.0 withDuration:0.5];
+    [verticalAnimation animateToFraction:1.0 withDuration:0.5];
+    
+    UIPinchGestureRecognizer *horizontalPinch = [[UIPinchGestureRecognizer alloc] initWithTarget:horizontalAnimation action:@selector(pinchHandler:)];
+    horizontalPinch.delegate = self;
+    [self.view addGestureRecognizer:horizontalPinch];
+    
+    UIPinchGestureRecognizer *verticalPinch = [[UIPinchGestureRecognizer alloc] initWithTarget:verticalAnimation action:@selector(pinchHandler:)];
+    verticalPinch.delegate = self;
+    [self.view addGestureRecognizer:verticalPinch];
 }
 
 -(BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation{
+    return YES;
+}
+
+-(BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer{
     return YES;
 }
 
